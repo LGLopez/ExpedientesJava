@@ -1,5 +1,7 @@
 package expedientes;
 
+import java.util.Objects;
+
 public class BinaryTree {
 
 	Node root;
@@ -126,7 +128,7 @@ public class BinaryTree {
 
 	}
 
-	public Node findNode(int key) {
+	public Node findNode(Long key) {
 
 		// Start at the top of the tree
 
@@ -135,7 +137,7 @@ public class BinaryTree {
 		// While we haven't found the Node
 		// keep looking
 
-		while (focusNode.key != key) {
+		while (!Objects.equals(focusNode.key, key)) {
 
 			// If we should search to the left
 
@@ -215,6 +217,32 @@ class Node {
                 
 	}
 
+    public Long getKey() {
+        return key;
+    }
+
+    public void setKey(Long key) {
+        this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRestoExpediente() {
+        return restoExpediente;
+    }
+
+    public void setRestoExpediente(String restoExpediente) {
+        this.restoExpediente = restoExpediente;
+    }
+        
+        
+        
 	public String toString() {
 
 		return name + "\r\n" + restoExpediente;

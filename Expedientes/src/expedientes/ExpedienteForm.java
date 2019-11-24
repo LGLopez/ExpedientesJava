@@ -18,11 +18,12 @@ import java.util.List;
 
 public class ExpedienteForm extends javax.swing.JFrame {
     String paraExpediente = null;
-    ArrayList paraArbol = new ArrayList<File>();
-    ArrayList probarMilisegundos = new ArrayList<Long>();
+    ArrayList<File> paraArbol = new ArrayList<File>();
+    ArrayList<Long> probarMilisegundos = new ArrayList<Long>();
     BinaryTree arbolExpedientes;
-    ArrayList paraNombre = new ArrayList<String>();
-    ArrayList paraResto = new ArrayList<String>();
+    ArrayList<String> paraNombre = new ArrayList<String>();
+    ArrayList<String> paraResto = new ArrayList<String>();
+    ArrayList<HoraNombre> paraB = new ArrayList<HoraNombre>();
     
     public ExpedienteForm() {
         initComponents();
@@ -121,6 +122,9 @@ public class ExpedienteForm extends javax.swing.JFrame {
                 }
                 if(!probarMilisegundos.isEmpty()){
                     arbolExpedientes.addNode((Long) probarMilisegundos.get(toRemove), paraNombre.get(toRemove).toString(), paraResto.get(toRemove).toString());
+                    
+                    paraB.add(new HoraNombre((Long) probarMilisegundos.get(toRemove), paraNombre.get(toRemove).toString()));
+                    
                     probarMilisegundos.remove(toRemove);
                     paraNombre.remove(toRemove);
                     paraResto.remove(toRemove);
@@ -132,6 +136,32 @@ public class ExpedienteForm extends javax.swing.JFrame {
         }
 
 
+    }
+    
+    public void buscar(){
+        String toSearch = JOptionPane.showInputDialog(this, "Ingrese el nombre que desea buscar:");
+        Long toSTree = null;
+        
+        for(int i=0; i<paraB.size(); i++){
+            if(paraB.get(i).getNombre().equals(toSearch)){
+                toSTree = paraB.get(i).getHora();
+                break;
+            }
+        }
+        if(toSTree!= null){
+            Node result = arbolExpedientes.findNode(toSTree);
+            if(result != null){
+                JOptionPane.showMessageDialog(this, "Encontrado:\r\n" + result.toString());
+                
+            }
+            else{
+                System.err.println("No encontrado.");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+        }
+            
     }
     /*
     public void load() {
@@ -237,6 +267,11 @@ public class ExpedienteForm extends javax.swing.JFrame {
         });
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -383,6 +418,10 @@ public class ExpedienteForm extends javax.swing.JFrame {
         
         arbolExpedientes.postOrderTraverseTree(arbolExpedientes.root);
     }//GEN-LAST:event_btnVerArbolActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        buscar();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
