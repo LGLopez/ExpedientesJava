@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class ExpedienteForm extends javax.swing.JFrame {
     String paraExpediente = null;
+    ArrayList paraArbol = new ArrayList<File>();
+    ArrayList probarMilisegundos = new ArrayList<Long>();
     
     public ExpedienteForm() {
         initComponents();
@@ -86,6 +89,9 @@ public class ExpedienteForm extends javax.swing.JFrame {
         }
         
         System.out.println(" " + mostrar);
+        
+        paraArbol.add(prueba);
+        probarMilisegundos.add(attr.creationTime().toMillis());
     }
     /*
     public void load() {
@@ -132,7 +138,8 @@ public class ExpedienteForm extends javax.swing.JFrame {
         btnRecargar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExpediente = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        toDebug = new javax.swing.JButton();
+        toCheckArrayList = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,10 +165,17 @@ public class ExpedienteForm extends javax.swing.JFrame {
         txtExpediente.setRows(5);
         jScrollPane1.setViewportView(txtExpediente);
 
-        jButton1.setText("Debug");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        toDebug.setText("Debug");
+        toDebug.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                toDebugActionPerformed(evt);
+            }
+        });
+
+        toCheckArrayList.setText("Revisar ArrayList");
+        toCheckArrayList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toCheckArrayListActionPerformed(evt);
             }
         });
 
@@ -184,7 +198,8 @@ public class ExpedienteForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRecargar)
                     .addComponent(btnAgregar)
-                    .addComponent(jButton1))
+                    .addComponent(toDebug)
+                    .addComponent(toCheckArrayList))
                 .addGap(28, 28, 28))
         );
         jPanel1Layout.setVerticalGroup(
@@ -205,13 +220,15 @@ public class ExpedienteForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnRecargar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(toDebug)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(toCheckArrayList))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -234,13 +251,35 @@ public class ExpedienteForm extends javax.swing.JFrame {
         agregar();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void toDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toDebugActionPerformed
+        paraArbol.clear();
         try {
             probarArchivos();
         } catch (IOException ex) {
             System.err.println("Fallo este pedo :'c");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_toDebugActionPerformed
+
+    private void toCheckArrayListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCheckArrayListActionPerformed
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("Para arbol array: ");
+        
+        for(int i=0; i<paraArbol.size(); i++){
+            System.out.println(paraArbol.get(i).toString());
+        }
+        
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("Probar milisegundos: ");
+        
+        for(int i=0; i<probarMilisegundos.size(); i++){
+            System.out.println(probarMilisegundos.get(i).toString());
+        }
+        
+    }//GEN-LAST:event_toCheckArrayListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,12 +319,13 @@ public class ExpedienteForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnRecargar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton toCheckArrayList;
+    private javax.swing.JButton toDebug;
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextArea txtExpediente;
     private javax.swing.JTextField txtNombre;
