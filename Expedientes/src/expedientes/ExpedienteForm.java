@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -69,9 +70,22 @@ public class ExpedienteForm extends javax.swing.JFrame {
     }
     
     public void leerContenido(Path filePath) throws IOException{
+        File prueba = new File(filePath.toString());
+        
+        System.out.println(prueba.toString());
+
+        BasicFileAttributes attr = Files.readAttributes(filePath, BasicFileAttributes.class);
+        System.out.println(attr.creationTime().toMillis());
         System.out.println("read file: " + filePath);
         List<String> fileList = Files.readAllLines(filePath);
-        System.out.println(" " + fileList);
+        
+        String mostrar = fileList.get(0);
+        for(int i=1; i<fileList.size()-1; i++){
+            mostrar += " ";
+            mostrar += fileList.get(i);
+        }
+        
+        System.out.println(" " + mostrar);
     }
     /*
     public void load() {
