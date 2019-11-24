@@ -27,6 +27,13 @@ public class ExpedienteForm extends javax.swing.JFrame {
     
     public ExpedienteForm() {
         initComponents();
+        
+        try {
+            probarArchivos();
+        } catch (IOException ex) {
+            System.err.println("Fallo de entrada y salida");
+        }
+        saveToTree();
     }
 
     public void agregar(){
@@ -63,6 +70,7 @@ public class ExpedienteForm extends javax.swing.JFrame {
     }
     
     public void probarArchivos() throws IOException{
+        paraArbol.clear();
         Stream<Path> paths = Files.walk(Paths.get("FolderExpedientes\\"));
         
         paths.forEach(filePath -> {
@@ -79,11 +87,11 @@ public class ExpedienteForm extends javax.swing.JFrame {
     public void leerContenido(Path filePath) throws IOException{
         File prueba = new File(filePath.toString());
         
-        System.out.println(prueba.toString());
+        //System.out.println(prueba.toString());
 
         BasicFileAttributes attr = Files.readAttributes(filePath, BasicFileAttributes.class);
-        System.out.println(attr.creationTime().toMillis());
-        System.out.println("read file: " + filePath);
+        //System.out.println(attr.creationTime().toMillis());
+        //System.out.println("read file: " + filePath);
         List<String> fileList = Files.readAllLines(filePath);
         
         String mostrar = fileList.get(0);
@@ -98,7 +106,7 @@ public class ExpedienteForm extends javax.swing.JFrame {
             mostrar += fileList.get(i);
         }
         
-        System.out.println(" " + mostrar);
+        //System.out.println(" " + mostrar);
         paraNombre.add(fileList.get(0));
         paraResto.add(restoExpediente);
         paraArbol.add(prueba);
@@ -154,46 +162,13 @@ public class ExpedienteForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Encontrado:\r\n" + result.toString());
                 
             }
-            else{
-                System.err.println("No encontrado.");
-            }
         }
         else{
             JOptionPane.showMessageDialog(this, "Usuario no encontrado");
         }
             
     }
-    /*
-    public void load() {
-        Path path = Paths.get(base_dir, data_dir);
-        try (Stream<Path> walk = Files.walk("FolderExpedientes\\")) {
-            List<String> result = walk.filter(Files::isRegularFile)
-                    .sorted((path1, path2) -> {
-                        int res = -1;
-                        try {
-                            BasicFileAttributes file1 = Files.getFileAttributeView(path1, BasicFileAttributeView.class).readAttributes();
-                            BasicFileAttributes file2 = Files.getFileAttributeView(path2, BasicFileAttributeView.class).readAttributes();
 
-                            res = file1.lastModifiedTime().compareTo(file2.lastModifiedTime());
-                        } catch (IOException ex) {
-                            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                        } finally {
-                            return res;
-                        }
-                    })
-                    .map(x -> x.toString())
-                    .collect(Collectors.toList());
-
-            result.forEach(filePath -> {
-                Patient patient = new Patient();
-                patient.load(filePath);
-                insert(patient, false);
-            });
-        } catch (IOException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -208,10 +183,6 @@ public class ExpedienteForm extends javax.swing.JFrame {
         btnRecargar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtExpediente = new javax.swing.JTextArea();
-        toDebug = new javax.swing.JButton();
-        toCheckArrayList = new javax.swing.JButton();
-        btnArbol = new javax.swing.JButton();
-        btnVerArbol = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -233,38 +204,15 @@ public class ExpedienteForm extends javax.swing.JFrame {
         });
 
         btnRecargar.setText("Recargar");
+        btnRecargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecargarActionPerformed(evt);
+            }
+        });
 
         txtExpediente.setColumns(20);
         txtExpediente.setRows(5);
         jScrollPane1.setViewportView(txtExpediente);
-
-        toDebug.setText("Debug");
-        toDebug.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toDebugActionPerformed(evt);
-            }
-        });
-
-        toCheckArrayList.setText("Revisar ArrayList");
-        toCheckArrayList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toCheckArrayListActionPerformed(evt);
-            }
-        });
-
-        btnArbol.setText("Crear Arbol");
-        btnArbol.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnArbolActionPerformed(evt);
-            }
-        });
-
-        btnVerArbol.setText("Ver Arbol");
-        btnVerArbol.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerArbolActionPerformed(evt);
-            }
-        });
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -281,34 +229,23 @@ public class ExpedienteForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(toDebug)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(toCheckArrayList)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnArbol)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnVerArbol)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnBuscar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnBuscar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnRecargar)
-                                    .addComponent(btnAgregar))))
-                        .addGap(66, 66, 66))))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre)
+                            .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRecargar)
+                            .addComponent(btnAgregar))))
+                .addGap(66, 66, 66))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,13 +271,7 @@ public class ExpedienteForm extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnArbol)
-                    .addComponent(btnVerArbol)
-                    .addComponent(toDebug)
-                    .addComponent(toCheckArrayList))
-                .addContainerGap())
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -363,65 +294,18 @@ public class ExpedienteForm extends javax.swing.JFrame {
         agregar();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void toDebugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toDebugActionPerformed
-        paraArbol.clear();
-        try {
-            probarArchivos();
-        } catch (IOException ex) {
-            System.err.println("Fallo este pedo :'c");
-        }
-    }//GEN-LAST:event_toDebugActionPerformed
-
-    private void toCheckArrayListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCheckArrayListActionPerformed
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("Para arbol array: ");
-        
-        for(int i=0; i<paraArbol.size(); i++){
-            System.out.println(paraArbol.get(i).toString());
-        }
-        
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("Probar milisegundos: ");
-        
-        for(int i=0; i<probarMilisegundos.size(); i++){
-            System.out.println(probarMilisegundos.get(i).toString());
-        }
-        
-    }//GEN-LAST:event_toCheckArrayListActionPerformed
-
-    private void btnArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArbolActionPerformed
-        saveToTree();
-    }//GEN-LAST:event_btnArbolActionPerformed
-
-    private void btnVerArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerArbolActionPerformed
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("In order:");
-        arbolExpedientes.inOrderTraverseTree(arbolExpedientes.root);
-
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("Pre order:");
-        
-        arbolExpedientes.preorderTraverseTree(arbolExpedientes.root);
-        
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("Post order:");
-        
-        arbolExpedientes.postOrderTraverseTree(arbolExpedientes.root);
-    }//GEN-LAST:event_btnVerArbolActionPerformed
-
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         buscar();
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnRecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecargarActionPerformed
+        try {
+            probarArchivos();
+        } catch (IOException ex) {
+            System.err.println("Fallo de entrada y salida");
+        }
+        saveToTree();
+    }//GEN-LAST:event_btnRecargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,17 +344,13 @@ public class ExpedienteForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnArbol;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnRecargar;
-    private javax.swing.JButton btnVerArbol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton toCheckArrayList;
-    private javax.swing.JButton toDebug;
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextArea txtExpediente;
     private javax.swing.JTextField txtNombre;
