@@ -42,7 +42,7 @@ public class ExpedienteForm extends javax.swing.JFrame {
             return;
         }
         
-        File toSave = new File("FolderExpedientes\\" + txtNombre.getText() + ".txt");
+        File toSave = new File("FolderExpedientes/" + txtNombre.getText() + ".txt");
         
         paraExpediente = txtNombre.getText() + "\r\n" + txtEdad.getText() + "\r\n" + txtExpediente.getText();
         System.out.println(paraExpediente);
@@ -71,7 +71,7 @@ public class ExpedienteForm extends javax.swing.JFrame {
     
     public void probarArchivos() throws IOException{
         paraArbol.clear();
-        Stream<Path> paths = Files.walk(Paths.get("FolderExpedientes\\"));
+        Stream<Path> paths = Files.walk(Paths.get("FolderExpedientes/"));
         
         paths.forEach(filePath -> {
             if(Files.isRegularFile(filePath)){
